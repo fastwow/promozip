@@ -38,7 +38,7 @@ class NewMatchScreen extends Component {
       text: '',
       isLoading: false,
       review: '',
-      step: 'cv',
+      step: 'job',
       description: '',
       tags: [],
       text: '',
@@ -47,12 +47,6 @@ class NewMatchScreen extends Component {
   }
 
   labelExtractor = tag => tag;
-
-  onChangeHorizontalTags = horizontalTags => {
-    this.setState({
-      horizontalTags,
-    });
-  };
 
   onChangeTags = tags => {
     this.setState({tags});
@@ -79,69 +73,56 @@ class NewMatchScreen extends Component {
           flex: 1,
         }}
         colors={['#1B1B1B', '#404040']}>
-        <ScrollView>
+        <Text
+          style={{
+            color: 'white',
+            borderColor: 12,
+            paddingLeft: 12,
+            paddingRight: 12,
+            fontSize: 20,
+            alignSelf: 'center',
+            marginTop: 12,
+            paddingTop: 6,
+            paddingBottom: 6,
+          }}>
+          {this.state.step === 'cv'
+            ? '2'
+            : this.state.step === 'job'
+            ? '1'
+            : ''}
+          /2
+        </Text>
+        <View
+          style={{
+            paddingLeft: 16,
+            paddingRight: 16,
+            fontSize: 32,
+          }}>
           <Text
             style={{
               color: 'white',
-              borderColor: 12,
-              paddingLeft: 12,
-              paddingRight: 12,
-              fontSize: 20,
+              fontWeight: 'bold',
+              fontSize: 32,
               alignSelf: 'center',
-              marginTop: 12,
-              paddingTop: 6,
-              paddingBottom: 6,
+              paddingTop: 16,
+            }}>
+            {this.state.step === 'cv' ? 'Skills' : 'Job'}
+          </Text>
+          <Text
+            style={{
+              color: 'white',
+              fontWeight: 'bold',
+              fontSize: 18,
+              paddingTop: 16,
+              alignSelf: 'center',
+              marginBottom: 16,
             }}>
             {this.state.step === 'cv'
-              ? '1'
-              : this.state.step === 'job'
-              ? '2'
-              : ''}
-            /2
+              ? 'What skills do you have?'
+              : 'What is job requirements?'}
           </Text>
-          <View
-            style={{
-              paddingLeft: 16,
-              paddingRight: 16,
-              fontSize: 32,
-            }}>
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: 32,
-                alignSelf: 'center',
-                paddingTop: 16,
-              }}>
-              {this.state.step === 'cv' ? 'Your info' : 'Job'}
-            </Text>
-            <Text
-              style={{
-                color: 'white',
-                fontWeight: 'bold',
-                fontSize: 18,
-                paddingTop: 16,
-                alignSelf: 'center',
-                marginBottom: 16,
-              }}>
-              {this.state.step === 'cv'
-                ? 'What skills do you have?'
-                : 'What is job requirements?'}
-            </Text>
-          </View>
-          <View
-            style={{
-              height: '100%',
-              flex: 1,
-              backgroundColor: 'white',
-              marginTop: 24,
-              margin: 12,
-              borderRadius: 12,
-            }}>
-            <Divider style={{marginBottom: 12}} />
-            {this.renderStep()}
-          </View>
-        </ScrollView>
+        </View>
+        <ScrollView>{this.renderStep()}</ScrollView>
         <Button
           buttonStyle={{
             backgroundColor: '#fe824c',
@@ -153,8 +134,8 @@ class NewMatchScreen extends Component {
           titleStyle={{color: 'white', fontWeight: 'bold'}}
           containerStyle={{margin: 16}}
           onPress={async () => {
-            if (this.state.step === 'cv') {
-              this.setState({step: 'job'});
+            if (this.state.step === 'job') {
+              this.setState({step: 'cv'});
             } else {
               this.setState({isVisible: true, isLoading: true});
               await this.store.sendFeedbackToCandidate(
@@ -164,7 +145,7 @@ class NewMatchScreen extends Component {
               this.setState({isVisible: true, isLoading: false});
             }
           }}
-          title={this.state.step === 'cv' ? 'Next' : 'Submit'}
+          title={this.state.step === 'job' ? 'Next' : 'Submit'}
         />
         <Overlay
           isVisible={this.state.isVisible}
@@ -212,56 +193,107 @@ class NewMatchScreen extends Component {
 
   renderStep = () => {
     return this.state.step === 'cv' ? (
-      <View style={{margin: 12}}>
-        <TagInput
-          value={this.state.tags}
-          onChange={this.onChangeTags}
-          labelExtractor={this.labelExtractor}
-          text={this.state.text}
-          onChangeText={this.onChangeText}
-          tagColor="#404040"
-          tagTextColor="white"
-          inputProps={inputProps}
-          maxHeight={500}
-          tagTextStyle={{
-            height: 30,
-            justifyContent: 'center',
-            alignItems: 'center',
-            testAlign: 'center',
-          }}
-          inputProps={{
-            height: 30,
-            justifyContent: 'center',
-            alignItems: 'center',
-            placeholderTextColor: 'grey',
-          }}
-          tagContainerStyle={{
-            height: 30,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        />
+      <View
+        style={{
+          height: '100%',
+          flex: 1,
+          backgroundColor: 'white',
+          marginTop: 24,
+          margin: 12,
+          borderRadius: 12,
+        }}>
+        <Divider style={{marginBottom: 12}} />
+        <View style={{margin: 12}}>
+          <TagInput
+            value={this.state.tags}
+            onChange={this.onChangeTags}
+            labelExtractor={this.labelExtractor}
+            text={this.state.text}
+            onChangeText={this.onChangeText}
+            tagColor="#404040"
+            tagTextColor="white"
+            inputProps={inputProps}
+            maxHeight={500}
+            tagTextStyle={{
+              height: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+              testAlign: 'center',
+            }}
+            inputProps={{
+              height: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+              placeholderTextColor: 'grey',
+            }}
+            tagContainerStyle={{
+              height: 30,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          />
+        </View>
       </View>
     ) : (
-      <View style={{marginLeft: 12, marginRight: 12, marginBottom: 12}}>
-        <TextInput
-          style={{marginTop: 12, marginBottom: 12}}
-          placeholder="Job title"
-          placeholderTextColor="grey"
-          fontSize={16}
-          onChangeText={title => this.setState({title})}
-          value={this.state.title}
-        />
-        <Divider style={{backgroundColor: 'grey'}} />
-        <TextInput
-          style={{marginTop: 12, marginBottom: 12}}
-          placeholder="Job description"
-          placeholderTextColor="grey"
-          fontSize={16}
-          onChangeText={description => this.setState({description})}
-          value={this.state.description}
-        />
-      </View>
+      <>
+        <View
+          style={{
+            height: '100%',
+            flex: 1,
+            backgroundColor: 'white',
+            marginTop: 24,
+            margin: 12,
+            borderRadius: 12,
+          }}>
+          <Divider style={{marginBottom: 12}} />
+          <View style={{marginLeft: 12, marginRight: 12, marginBottom: 12}}>
+            <TextInput
+              style={{marginTop: 12, marginBottom: 12}}
+              placeholder="Job title"
+              placeholderTextColor="grey"
+              fontSize={16}
+              onChangeText={title => this.setState({title})}
+              value={this.state.title}
+            />
+            <Divider style={{backgroundColor: 'grey'}} />
+            <TextInput
+              style={{marginTop: 12, marginBottom: 12}}
+              placeholder="Job description"
+              placeholderTextColor="grey"
+              fontSize={16}
+              onChangeText={description => this.setState({description})}
+              value={this.state.description}
+            />
+          </View>
+        </View>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 18,
+            color: 'white',
+            alignSelf: 'center',
+          }}>
+          OR
+        </Text>
+        <View
+          style={{
+            height: '100%',
+            flex: 1,
+            backgroundColor: 'white',
+            marginTop: 12,
+            margin: 12,
+            borderRadius: 12,
+          }}>
+          <TextInput
+            style={{margin: 12}}
+            placeholder="Craigslist url link..."
+            placeholderTextColor="grey"
+            fontSize={16}
+            onChangeText={title => this.setState({title})}
+            value={this.state.title}
+          />
+        </View>
+      </>
     );
   };
 }
