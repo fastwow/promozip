@@ -119,7 +119,7 @@ class HomeScreen extends Component {
                   onPress={() => {
                     this.props.navigation.navigate('LearningPlan', {
                       title: title,
-                      id,
+                      matchId: id,
                     });
                   }}
                   icon={
