@@ -5,7 +5,7 @@ class AppStore {
   jobPostList;
 
   constructor() {
-    this.user = null;
+    this.user = {id: '1', firstname: 'Artem', lastname: 'Dudinskyi'};
     this.jobPostList = [];
   }
 
@@ -19,12 +19,22 @@ class AppStore {
       },
     ];
   }
+
+  async signOut() {
+    try {
+      this.company = null;
+      this.user = null;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
 
 decorate(AppStore, {
   user: observable,
   jobPostList: observable,
   loadJobPostList: action,
+  signOut: action,
 });
 
 export default AppStore = new AppStore();

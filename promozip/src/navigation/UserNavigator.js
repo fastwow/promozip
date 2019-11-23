@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform} from 'react-native';
+import {Platform, Settings} from 'react-native';
 import {
   createStackNavigator,
   createAppContainer,
@@ -9,6 +9,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import NewMatchScreen from '../screens/NewMatchScreen';
 
 const config = Platform.select({
@@ -32,6 +33,7 @@ HomeStack.navigationOptions = {
 const ProfileStack = createStackNavigator(
   {
     Profile: ProfileScreen,
+    Settings: SettingsScreen,
   },
   config,
 );
