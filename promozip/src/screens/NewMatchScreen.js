@@ -42,8 +42,7 @@ class NewMatchScreen extends Component {
       description: '',
       tags: [],
       text: '',
-      horizontalTags: [],
-      horizontalText: '',
+      title: '',
     };
   }
 
@@ -70,24 +69,6 @@ class NewMatchScreen extends Component {
         tags: [...this.state.tags, this.state.text],
         text: '',
       });
-    }
-  };
-
-  onChangeHorizontalText = horizontalText => {
-    this.setState({horizontalText});
-
-    const lastTyped = horizontalText.charAt(horizontalText.length - 1);
-    const parseWhen = [',', ' ', ';', '\n'];
-
-    if (parseWhen.indexOf(lastTyped) > -1) {
-      this.setState({
-        horizontalTags: [
-          ...this.state.horizontalTags,
-          this.state.horizontalText,
-        ],
-        horizontalText: '',
-      });
-      this._horizontalTagInput.scrollToEnd();
     }
   };
 
@@ -210,8 +191,11 @@ class NewMatchScreen extends Component {
               style={{padding: 10, width: 200}}
               title="OK"
               onPress={() => {
-                this.props.navigation.pop();
                 this.setState({isVisible: false});
+                this.props.navigation.navigate('LearningPlan', {
+                  title: title,
+                  matchId: id,
+                });
               }}
             />
           </View>
@@ -261,6 +245,16 @@ class NewMatchScreen extends Component {
     ) : (
       <View style={{marginLeft: 12, marginRight: 12, marginBottom: 12}}>
         <TextInput
+          style={{marginTop: 12, marginBottom: 12}}
+          placeholder="Job title"
+          placeholderTextColor="grey"
+          fontSize={16}
+          onChangeText={title => this.setState({title})}
+          value={this.state.title}
+        />
+        <Divider style={{backgroundColor: 'grey'}} />
+        <TextInput
+          style={{marginTop: 12, marginBottom: 12}}
           placeholder="Job description"
           placeholderTextColor="grey"
           fontSize={16}
