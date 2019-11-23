@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Card} from 'react-native-elements';
 import {View} from 'react-native';
-import {Button, Text, Overlay, Avatar} from 'react-native-elements';
+import {Button, Text} from 'react-native-elements';
 import {Icon} from 'react-native-elements';
 import LinearGradient from 'react-native-linear-gradient';
 import {SafeAreaView} from 'react-navigation';
@@ -54,7 +54,7 @@ class HomeScreen extends Component {
                 fontSize: 32,
                 paddingTop: 16,
               }}>
-              Matching Tests
+              Learning plan
             </Text>
             <Text
               style={{
@@ -117,8 +117,8 @@ class HomeScreen extends Component {
                   }}
                   titleStyle={{color: 'white', fontWeight: 'bold'}}
                   onPress={() => {
-                    this.props.navigation.navigate('JobDetails', {
-                      title: company.name,
+                    this.props.navigation.navigate('LearningPlan', {
+                      title: title,
                       id,
                     });
                   }}
@@ -130,7 +130,7 @@ class HomeScreen extends Component {
                       color="white"
                     />
                   }
-                  title=" Check"
+                  title=" Learning plan"
                 />
               </Card>
             ))}
@@ -151,7 +151,7 @@ class HomeScreen extends Component {
             this.props.navigation.navigate('NewMatch');
           }}
           containerStyle={{margin: 16}}
-          title="New Test"
+          title="New Check"
         />
         {this.state.isLoading && (
           <Spinner

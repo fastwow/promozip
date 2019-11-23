@@ -26,7 +26,7 @@ class NewMatchScreen extends Component {
   store = AppStore;
 
   static navigationOptions = ({navigation}) => ({
-    title: 'New Test',
+    title: 'New Check',
   });
 
   constructor(props) {

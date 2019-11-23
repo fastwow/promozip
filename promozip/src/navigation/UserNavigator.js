@@ -11,6 +11,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import NewMatchScreen from '../screens/NewMatchScreen';
+import LearningPlan from '../screens/LearningPlanScreen';
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -21,12 +22,13 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     NewMatch: NewMatchScreen,
+    LearningPlan: LearningPlan,
   },
   config,
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Jobs',
+  tabBarLabel: 'Learning Plans',
   tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'comments'} />,
 };
 
