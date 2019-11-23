@@ -7,6 +7,7 @@ import {
   Overlay,
 } from 'react-native-elements';
 
+import TagInput from 'react-native-tag-input';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -16,6 +17,31 @@ import AppStore from '../store/AppStore';
 
 import {observer} from 'mobx-react';
 import Spinner from 'react-native-loading-spinner-overlay';
+
+const inputProps = {
+  keyboardType: 'default',
+  placeholder: 'email',
+  autoFocus: true,
+  style: {
+    fontSize: 14,
+    marginVertical: Platform.OS == 'ios' ? 10 : -2,
+  },
+};
+
+const horizontalInputProps = {
+  keyboardType: 'default',
+  returnKeyType: 'search',
+  placeholder: 'Search',
+  style: {
+    fontSize: 14,
+    marginVertical: Platform.OS == 'ios' ? 10 : -2,
+  },
+};
+
+const horizontalScrollViewProps = {
+  horizontal: true,
+  showsHorizontalScrollIndicator: false,
+};
 
 class NewMatchScreen extends Component {
   store = AppStore;
@@ -29,13 +55,60 @@ class NewMatchScreen extends Component {
 
     this.state = {
       isVisible: false,
-      selectSkills: [],
       skills: [],
-      isSkillSelectionVisible: false,
+      text: '',
       isLoading: false,
       review: '',
+      tags: [],
+      text: '',
+      horizontalTags: [],
+      horizontalText: '',
     };
   }
+
+  labelExtractor = tag => tag;
+
+  onChangeHorizontalTags = horizontalTags => {
+    this.setState({
+      horizontalTags,
+    });
+  };
+
+  onChangeTags = tags => {
+    this.setState({tags});
+  };
+
+  onChangeText = text => {
+    this.setState({text});
+
+    const lastTyped = text.charAt(text.length - 1);
+    const parseWhen = [',', ' ', ';', '\n'];
+
+    if (parseWhen.indexOf(lastTyped) > -1) {
+      this.setState({
+        tags: [...this.state.tags, this.state.text],
+        text: '',
+      });
+    }
+  };
+
+  onChangeHorizontalText = horizontalText => {
+    this.setState({horizontalText});
+
+    const lastTyped = horizontalText.charAt(horizontalText.length - 1);
+    const parseWhen = [',', ' ', ';', '\n'];
+
+    if (parseWhen.indexOf(lastTyped) > -1) {
+      this.setState({
+        horizontalTags: [
+          ...this.state.horizontalTags,
+          this.state.horizontalText,
+        ],
+        horizontalText: '',
+      });
+      this._horizontalTagInput.scrollToEnd();
+    }
+  };
 
   render() {
     return (
@@ -66,6 +139,32 @@ class NewMatchScreen extends Component {
                 check
               </Text>
             </View>
+            <TagInput
+              value={this.state.tags}
+              onChange={this.onChangeTags}
+              labelExtractor={this.labelExtractor}
+              text={this.state.text}
+              onChangeText={this.onChangeText}
+              tagColor="#404040"
+              tagTextColor="white"
+              inputProps={inputProps}
+              tagTextStyle={{
+                height: 30,
+                justifyContent: 'center',
+                alignItems: 'center',
+                testAlign: 'center',
+              }}
+              inputProps={{
+                height: 30,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              tagContainerStyle={{
+                height: 30,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            />
           </View>
         </ScrollView>
         <Button
