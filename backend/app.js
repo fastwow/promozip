@@ -1,5 +1,8 @@
 var express = require("express");
 var app = express();
+var bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 let state = {
   matches: [
@@ -50,15 +53,16 @@ app.listen(3000, function() {
 });
 
 app.get("/matches", (req, res) => {
-  res
-    .status(200)
-    .json(state.matches)
-    .send();
+  res.status(200).json(state.matches);
+});
+
+app.post("/matches", (req, res) => {
+  const { title, description, skills } = req.body;
+  const match = { id: Math.random(), title, description, skills };
+  state.matches.push(match);
+  res.json(match);
 });
 
 app.get("/learningplans/:id", (req, res) => {
-  res
-    .status(200)
-    .json(state.learningPlans[req.params.id])
-    .send();
+  res.status(200).json(state.learningPlans[req.params.id]);
 });

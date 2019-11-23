@@ -1,5 +1,5 @@
-import {action, computed, decorate, observable} from 'mobx';
-import {fetchMatches, fetchLearningPlan} from '../api/service';
+import {action, decorate, observable} from 'mobx';
+import {fetchMatches, fetchLearningPlan, postMatch} from '../api/service';
 
 class AppStore {
   user;
@@ -17,8 +17,8 @@ class AppStore {
   }
 
   async newMatch({title, description, skills}) {
-    const match = {id: Math.random(), title, description, skills};
-    this.matchList.push({match, title, description, skills});
+    const match = await postMatch({title, description, skills});
+    this.matchList.push(match);
     return match;
   }
 
