@@ -62,7 +62,8 @@ class NewMatchScreen extends Component {
                   fontSize: 32,
                   marginBottom: 16,
                 }}>
-                Please enter your skills and job position you are want to check
+                Please enter your skills and job description you are want to
+                check
               </Text>
             </View>
           </View>
