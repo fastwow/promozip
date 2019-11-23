@@ -1,14 +1,8 @@
 import React, {Component} from 'react';
-import {
-  Button,
-  AirbnbRating,
-  Text,
-  ListItem,
-  Overlay,
-} from 'react-native-elements';
+import {Button, Divider, Text, Overlay} from 'react-native-elements';
 
 import TagInput from 'react-native-tag-input';
-import {View} from 'react-native';
+import {View, TextInput} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -23,24 +17,9 @@ const inputProps = {
   placeholder: 'email',
   autoFocus: true,
   style: {
-    fontSize: 14,
+    fontSize: 18,
     marginVertical: Platform.OS == 'ios' ? 10 : -2,
   },
-};
-
-const horizontalInputProps = {
-  keyboardType: 'default',
-  returnKeyType: 'search',
-  placeholder: 'Search',
-  style: {
-    fontSize: 14,
-    marginVertical: Platform.OS == 'ios' ? 10 : -2,
-  },
-};
-
-const horizontalScrollViewProps = {
-  horizontal: true,
-  showsHorizontalScrollIndicator: false,
 };
 
 class NewMatchScreen extends Component {
@@ -59,6 +38,8 @@ class NewMatchScreen extends Component {
       text: '',
       isLoading: false,
       review: '',
+      step: 'cv',
+      description: '',
       tags: [],
       text: '',
       horizontalTags: [],
@@ -118,6 +99,55 @@ class NewMatchScreen extends Component {
         }}
         colors={['#1B1B1B', '#404040']}>
         <ScrollView>
+          <Text
+            style={{
+              color: 'white',
+              borderColor: 12,
+              paddingLeft: 12,
+              paddingRight: 12,
+              fontSize: 20,
+              alignSelf: 'center',
+              marginTop: 12,
+              paddingTop: 6,
+              paddingBottom: 6,
+            }}>
+            {this.state.step === 'cv'
+              ? '1'
+              : this.state.step === 'job'
+              ? '2'
+              : ''}
+            /2
+          </Text>
+          <View
+            style={{
+              paddingLeft: 16,
+              paddingRight: 16,
+              fontSize: 32,
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 32,
+                alignSelf: 'center',
+                paddingTop: 16,
+              }}>
+              {this.state.step === 'cv' ? 'Your info' : 'Job'}
+            </Text>
+            <Text
+              style={{
+                color: 'white',
+                fontWeight: 'bold',
+                fontSize: 18,
+                paddingTop: 16,
+                alignSelf: 'center',
+                marginBottom: 16,
+              }}>
+              {this.state.step === 'cv'
+                ? 'What skills do you have?'
+                : 'What is job requirements?'}
+            </Text>
+          </View>
           <View
             style={{
               height: '100%',
@@ -127,44 +157,8 @@ class NewMatchScreen extends Component {
               margin: 12,
               borderRadius: 12,
             }}>
-            <View style={{padding: 12}}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontWeight: 'bold',
-                  fontSize: 32,
-                  marginBottom: 16,
-                }}>
-                Please enter your skills and job description you are want to
-                check
-              </Text>
-            </View>
-            <TagInput
-              value={this.state.tags}
-              onChange={this.onChangeTags}
-              labelExtractor={this.labelExtractor}
-              text={this.state.text}
-              onChangeText={this.onChangeText}
-              tagColor="#404040"
-              tagTextColor="white"
-              inputProps={inputProps}
-              tagTextStyle={{
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-                testAlign: 'center',
-              }}
-              inputProps={{
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              tagContainerStyle={{
-                height: 30,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            />
+            <Divider style={{marginBottom: 12}} />
+            {this.renderStep()}
           </View>
         </ScrollView>
         <Button
@@ -178,14 +172,18 @@ class NewMatchScreen extends Component {
           titleStyle={{color: 'white', fontWeight: 'bold'}}
           containerStyle={{margin: 16}}
           onPress={async () => {
-            this.setState({isVisible: true, isLoading: true});
-            await this.store.sendFeedbackToCandidate(
-              this.props.navigation.getParam('id'),
-              {skills: this.state.selectSkills, review: this.state.review},
-            );
-            this.setState({isVisible: true, isLoading: false});
+            if (this.state.step === 'cv') {
+              this.setState({step: 'job'});
+            } else {
+              this.setState({isVisible: true, isLoading: true});
+              await this.store.sendFeedbackToCandidate(
+                this.props.navigation.getParam('id'),
+                {skills: this.state.selectSkills, review: this.state.review},
+              );
+              this.setState({isVisible: true, isLoading: false});
+            }
           }}
-          title="Submit"
+          title={this.state.step === 'cv' ? 'Next' : 'Submit'}
         />
         <Overlay
           isVisible={this.state.isVisible}
@@ -227,6 +225,51 @@ class NewMatchScreen extends Component {
       </LinearGradient>
     );
   }
+
+  renderStep = () => {
+    return this.state.step === 'cv' ? (
+      <View style={{margin: 12}}>
+        <TagInput
+          value={this.state.tags}
+          onChange={this.onChangeTags}
+          labelExtractor={this.labelExtractor}
+          text={this.state.text}
+          onChangeText={this.onChangeText}
+          tagColor="#404040"
+          tagTextColor="white"
+          inputProps={inputProps}
+          maxHeight={500}
+          tagTextStyle={{
+            height: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+            testAlign: 'center',
+          }}
+          inputProps={{
+            height: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+            placeholderTextColor: 'grey',
+          }}
+          tagContainerStyle={{
+            height: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        />
+      </View>
+    ) : (
+      <View style={{marginLeft: 12, marginRight: 12, marginBottom: 12}}>
+        <TextInput
+          placeholder="Job description"
+          placeholderTextColor="grey"
+          fontSize={16}
+          onChangeText={description => this.setState({description})}
+          value={this.state.description}
+        />
+      </View>
+    );
+  };
 }
 
 export default observer(NewMatchScreen);
