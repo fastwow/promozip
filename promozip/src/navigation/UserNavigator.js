@@ -9,6 +9,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import NewMatchScreen from '../screens/NewMatchScreen';
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -18,6 +19,7 @@ const config = Platform.select({
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
+    NewMatch: NewMatchScreen,
   },
   config,
 );

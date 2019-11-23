@@ -54,7 +54,7 @@ class HomeScreen extends Component {
                 fontSize: 32,
                 paddingTop: 16,
               }}>
-              Matching test
+              Matching Tests
             </Text>
             <Text
               style={{
@@ -64,7 +64,7 @@ class HomeScreen extends Component {
                 paddingTop: 16,
                 marginBottom: 16,
               }}>
-              Positions which you're interested in
+              Job positions which you're interested in
             </Text>
           </View>
           <View>
@@ -130,12 +130,29 @@ class HomeScreen extends Component {
                       color="white"
                     />
                   }
-                  title=" Check "
+                  title=" Check"
                 />
               </Card>
             ))}
           </View>
         </ScrollView>
+        <Button
+          buttonStyle={{
+            backgroundColor: 'white',
+            width: '100%',
+            alignSelf: 'center',
+            height: 50,
+            borderColor: '#404040',
+            borderWidth: 1,
+            borderRadius: 12,
+          }}
+          titleStyle={{color: '#404040', fontWeight: 'bold'}}
+          onPress={() => {
+            this.props.navigation.navigate('NewMatch');
+          }}
+          containerStyle={{margin: 16}}
+          title="New Test"
+        />
         {this.state.isLoading && (
           <Spinner
             visible={this.state.isLoading}
