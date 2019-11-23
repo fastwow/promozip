@@ -31,6 +31,7 @@ export const fetchLearningPlan = async matchId => {
       `http://localhost:3000/learningplans/${matchId}`,
     );
     let responseJson = await response.json();
+    console.log(responseJson);
     return responseJson;
   } catch (error) {
     console.error(error);
