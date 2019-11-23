@@ -2,17 +2,17 @@ import {action, computed, decorate, observable} from 'mobx';
 
 class AppStore {
   user;
-  jobPostList;
+  matchList;
   learningPlan;
 
   constructor() {
     this.user = {id: '1', firstname: 'Artem', lastname: 'Dudinskyi'};
-    this.jobPostList = [];
+    this.matchList = [];
     this.learningPlan = [];
   }
 
-  async loadJobPostList() {
-    this.jobPostList = [
+  async loadMatchList() {
+    this.matchList = [
       {
         id: '1',
         title: 'Prep Cook',
@@ -20,6 +20,12 @@ class AppStore {
           'The purpose of this position is to assist the Chef, Sous Chef, and BOH Supervisor in the Tomatina Back of House operations',
       },
     ];
+  }
+
+  async newMatch({title, description, skills}) {
+    const match = {id: Math.random(), title, description, skills};
+    this.matchList.push({match, title, description, skills});
+    return match;
   }
 
   async loadLearningPlan(matchId) {
@@ -68,9 +74,10 @@ class AppStore {
 
 decorate(AppStore, {
   user: observable,
-  jobPostList: observable,
+  matchList: observable,
   learningPlan: observable,
-  loadJobPostList: action,
+  loadMatchList: action,
+  newMatch: action,
   signOut: action,
 });
 

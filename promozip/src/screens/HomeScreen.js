@@ -23,7 +23,7 @@ class HomeScreen extends Component {
 
   async componentDidMount() {
     this.setState({isLoading: true});
-    await this.store.loadJobPostList();
+    await this.store.loadMatchList();
     this.setState({isLoading: false});
   }
 
@@ -68,7 +68,7 @@ class HomeScreen extends Component {
             </Text>
           </View>
           <View>
-            {this.store.jobPostList.map(({id, title}, i) => (
+            {this.store.matchList.map(({id, title}, i) => (
               <Card
                 key={id}
                 containerStyle={{

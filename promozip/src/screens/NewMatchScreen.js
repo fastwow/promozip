@@ -42,7 +42,9 @@ class NewMatchScreen extends Component {
       description: '',
       tags: [],
       text: '',
+      match: null,
       title: '',
+      url: '',
     };
   }
 
@@ -138,11 +140,12 @@ class NewMatchScreen extends Component {
               this.setState({step: 'cv'});
             } else {
               this.setState({isVisible: true, isLoading: true});
-              await this.store.sendFeedbackToCandidate(
-                this.props.navigation.getParam('id'),
-                {skills: this.state.selectSkills, review: this.state.review},
-              );
-              this.setState({isVisible: true, isLoading: false});
+              match = await this.store.newMatch({
+                title: this.state.title,
+                description: this.state.description,
+                skills: this.state.tags,
+              });
+              this.setState({isVisible: true, match, isLoading: false});
             }
           }}
           title={this.state.step === 'job' ? 'Next' : 'Submit'}
@@ -157,11 +160,10 @@ class NewMatchScreen extends Component {
               justifyContent: 'center',
             }}>
             <Text style={{padding: 10, fontSize: 20, fontWeight: 'bold'}}>
-              Thank You!
+              Congratulations!
             </Text>
             <Text style={{padding: 10, fontSize: 16}}>
-              We have sent an email to the candidate. You will get feedback from
-              the candidate after he receives yours
+              We built a learning plan for you!
             </Text>
             <Button
               buttonStyle={{
@@ -170,12 +172,12 @@ class NewMatchScreen extends Component {
                 borderRadius: 12,
               }}
               style={{padding: 10, width: 200}}
-              title="OK"
+              title="Check out"
               onPress={() => {
                 this.setState({isVisible: false});
                 this.props.navigation.navigate('LearningPlan', {
-                  title: title,
-                  matchId: id,
+                  title: this.state.match.title,
+                  matchId: this.state.match.id,
                 });
               }}
             />
@@ -183,6 +185,7 @@ class NewMatchScreen extends Component {
         </Overlay>
         {this.state.isLoading && (
           <Spinner
+            text="Building the learning plan..."
             visible={this.state.isLoading}
             textStyle={{color: 'white'}}
           />
@@ -289,8 +292,8 @@ class NewMatchScreen extends Component {
             placeholder="Craigslist url link..."
             placeholderTextColor="grey"
             fontSize={16}
-            onChangeText={title => this.setState({title})}
-            value={this.state.title}
+            onChangeText={url => this.setState({url})}
+            value={this.state.url}
           />
         </View>
       </>
