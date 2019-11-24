@@ -12,14 +12,15 @@ import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import NewMatchScreen from '../screens/NewMatchScreen';
 import LearningPlan from '../screens/LearningPlanScreen';
+import WelcomePageScreen from '../screens/WelcomePageScreen';
 
 const config = Platform.select({
-  web: {headerMode: 'screen'},
-  default: {},
+  headerMode: 'none',
 });
 
 const HomeStack = createStackNavigator(
   {
+    Welcome: WelcomePageScreen,
     Home: HomeScreen,
     NewMatch: NewMatchScreen,
     LearningPlan: LearningPlan,
@@ -28,8 +29,8 @@ const HomeStack = createStackNavigator(
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: 'Learning Plans',
-  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'comments'} />,
+  tabBarLabel: 'Learning',
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'book'} />,
 };
 
 const ProfileStack = createStackNavigator(

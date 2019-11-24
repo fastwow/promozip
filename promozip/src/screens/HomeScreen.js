@@ -54,17 +54,18 @@ class HomeScreen extends Component {
                 fontSize: 32,
                 paddingTop: 16,
               }}>
-              Learning plan
+              Learning plans
             </Text>
             <Text
               style={{
                 color: 'white',
                 fontWeight: 'bold',
-                fontSize: 18,
+                fontSize: 24,
                 paddingTop: 16,
                 marginBottom: 16,
               }}>
-              Job positions which you're interested in
+              Learning plans based on the match of your missed skills and job
+              skills requirements
             </Text>
           </View>
           <View>

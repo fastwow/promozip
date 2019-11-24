@@ -13,6 +13,7 @@
     "axios": "^0.19.0",
     "react": "16.9.0",
     "react-native": "0.61.4",
+    "react-native-app-intro-slider": "^3.0.0",
     "react-native-tag-input": "0.0.21",
     "react-native-tags": "^2.1.0",
     "react-native-vector-icons": "^6.6.0"

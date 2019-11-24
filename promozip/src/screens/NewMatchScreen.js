@@ -114,7 +114,7 @@ class NewMatchScreen extends Component {
             style={{
               color: 'white',
               fontWeight: 'bold',
-              fontSize: 18,
+              fontSize: 24,
               paddingTop: 16,
               alignSelf: 'center',
               marginBottom: 16,
